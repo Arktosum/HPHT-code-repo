@@ -6,10 +6,10 @@ def list_active_com_ports():
     ports = serial.tools.list_ports.comports()
     active_ports = []
     for port, desc, hwid in sorted(ports):
-        active_ports.append((port, desc, hwid))
+        active_ports.append(port)
     return active_ports
 
-SERIAL_PORT = 'COM3' 
+SERIAL_PORT = 'COM4' 
 BAUD_RATE = 115200  
 
 def read_from_serial(serial_port, baud_rate):
@@ -25,7 +25,7 @@ def write_to_csv(file_name, data):
 def main():
     serial_port = SERIAL_PORT
     active_ports =  list_active_com_ports()
-    print(active_ports)
+    
     if serial_port not in active_ports:
         print(serial_port,'not in active ports!')
         return
