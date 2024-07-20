@@ -1,0 +1,12 @@
+Export raw data : Export raw data,True
+Specimen properties : Diameter,"8.00000",mm
+Specimen properties : Anvil height,"16.00000",mm
+Test : Rate 1,"0.50000",mm/min
+Test : Control mode 1,Extension
+
+Results Table 1
+,Diameter,Anvil height,Rate 1,Load at Maximum Compressive stress,Extension at Maximum Compressive stress,Maximum Compressive stress,Maximum Compressive strain (Extension)
+,(mm),(mm),(mm/min),(N),(mm),(MPa),(mm/mm)
+1,"8.00000","16.00000","0.50000","1000.00635","0.19006","19.89450","0.01188"
+2,"8.00000","16.00000","0.50000","1500.02222","0.23878","29.84200","0.01492"
+

@@ -2,15 +2,17 @@ import serial
 import serial.tools.list_ports
 import csv
 import time
+
 def list_active_com_ports():
     ports = serial.tools.list_ports.comports()
     active_ports = []
     for port, desc, hwid in sorted(ports):
         active_ports.append(port)
+        print(port,desc)
     return active_ports
 
 SERIAL_PORT = 'COM4' 
-BAUD_RATE = 115200  
+BAUD_RATE = 115200
 
 def read_from_serial(serial_port, baud_rate):
     ser = serial.Serial(serial_port, baud_rate)
@@ -42,7 +44,6 @@ def main():
                 data = line.split(',')  # Assuming the serial data is comma-separated
                 write_to_csv(file_name, data)
                 print(f"Written to CSV: {data}")
-            time.sleep(0.1)
     except KeyboardInterrupt:
         print("Terminated by user.")
     finally:
