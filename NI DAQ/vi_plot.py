@@ -7,7 +7,6 @@ from matplotlib.animation import FuncAnimation
 
 rm = pyvisa.ResourceManager()
 nano_volt = rm.open_resource('GPIB0::7::INSTR')
-
 nano_volt.write('*RST')
 nano_volt.write(":SENS:FUNC 'VOLT'; :SENS:CHAN 1;")
 
@@ -18,7 +17,6 @@ sm.query(":MEASure:VOLTage?")
 
 print(nano_volt.query("*IDN?"))
 print(sm.query("*IDN?"))
-
 
 def set_current(current):
     sm.write(f":SOUR:CURR {current}")
@@ -31,63 +29,60 @@ def measure_voltage(current : float):
     return volt
 
 
-MIN_RANGE = -200*10**-6
-MAX_RANGE = 200*10**-6
-
-STEP = 5
+MIN_RANGE = -500*10**-6
+MAX_RANGE = 500*10**-6
+STEP = 10 
 step_size = (MAX_RANGE - MIN_RANGE)/ STEP
-this_current= MIN_RANGE
+current = MIN_RANGE
+
 currents = []
 voltages = []
 resistances = []
 
 AVERAGE_COUNT  = 5
 EXP_NO = 1
-csv_filename = f'current_voltage-{EXP_NO}.csv'
+epsilon = 1e-9
+
+csv_filename = f'iv_at_187_bar.csv'
 headers = ['Timestamp','Current (A)','Voltage (V)',"Resistance (Ohms)"]
 
-plt.style.use('fivethirtyeight')
-plt.get_current_fig_manager().window.showMaximized()
-
-epsilon = 1e-9
-time.sleep(0.01)
-def animate(i):
-    global this_current
-    if this_current > MAX_RANGE:
+def render():
+    global current
+    if current > MAX_RANGE:
         return
-        
-    # Measure AVERAGE_COUNT volts and take average
+
     avg_volts = []
     for i in range(AVERAGE_COUNT):
-        volt = measure_voltage(this_current)
+        volt = measure_voltage(current)
         avg_volts.append(volt)
-        
-    # calculate average voltage
+    
+    # ---------------------------------
     avg_volt = sum(avg_volts)/len(avg_volts)
-    
-    # Calculate Resistance  R = V/I
-    resistance = avg_volt/(this_current + epsilon)
-    
-    
-    currents.append(this_current)
+    resistance = avg_volt/(current + epsilon)
+    # ---------------------------------
+    currents.append(current)
     voltages.append(avg_volt)
     resistances.append(resistance)
-
+    # ---------------------------------
     timestamp = get_time()
-    data = [timestamp,this_current,avg_volt,resistance]
+    data = [timestamp,current,avg_volt,resistance]
     write_to_csv(csv_filename,headers,data)
     print(data)
-    this_current += step_size
+    current += step_size
+    # ---------------------------------
     
-    
+
+plt.style.use('fivethirtyeight')
+time.sleep(0.01)
+def animate(i):
+    render()
     plt.cla()
-    plt.plot(currents,voltages,label="Current vs Voltage")
+    plt.plot(currents,voltages,c='lightblue',linestyle='dashed',zorder=1)
+    plt.scatter(currents,voltages,label="Current vs Voltage",c='red',zorder=2)
     plt.legend()
     plt.tight_layout()
     
-plot_animation = FuncAnimation(plt.gcf(),animate,interval=100)
-
-
+plot_animation = FuncAnimation(plt.gcf(),animate,interval=100,cache_frame_data=False)
 plt.show()
 
 

@@ -8,6 +8,7 @@ def write_to_csv(file_name,headers,row):
         if csv_file.tell() == 0:
             csv_writer.writerow(headers)
         csv_writer.writerow(row)
+        
 def get_time():
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     return timestamp

@@ -111,8 +111,9 @@ MAP = [
 ]
 
 prev_pressure = 0
+prev_time = ""
 while True:
-    cursor.execute("SELECT top 2 * FROM [IIT300].[dbo].[ActualLog] where date1 = '2024-07-22' order by time1 desc") 
+    cursor.execute("SELECT top 2 * FROM [IIT300].[dbo].[ActualLog] where date1 = '2024-07-25' order by time1 desc") 
     row = cursor.fetchone() 
     data = []
     while row:
@@ -123,8 +124,10 @@ while True:
     for row in data:
         date = row[MAP.index('DATE1')]
         time_ = row[MAP.index('TIME1')]
-        
-        hp = row[MAP.index("HYDPRESSURE1")]
+        this_time = date + "|" + time_
+        if prev_time == this_time:
+            continue
+        hp =  row[MAP.index("HYDPRESSURE1")]
         hp += row[MAP.index("HYDPRESSURE2")]
         hp += row[MAP.index("HYDPRESSURE3")]
         hp += row[MAP.index("HYDPRESSURE4")]
@@ -135,6 +138,9 @@ while True:
         
         deviation = prev_pressure - hp
         prev_pressure = hp
+        
+        prev_time = this_time
+        
         print(date,time_,round(hp,2),round(deviation,2))
         time.sleep(1)
     
