@@ -1,0 +1,8 @@
+
+               RED IN           |      BLACK IN
+FRONT   =     159 kOhm          |    +168 kOhm
+REAR    =     190 kOhm          |     188 kOhm
+LEFT    =     -OL               |   +OL
+RIGHT   =     +OL               |   -OL
+TOP     =     53 kOhm          |    47 kOhm
+BOTTOM  =     40 kOhm          |    40 kOhm

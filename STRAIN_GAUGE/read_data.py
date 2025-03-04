@@ -11,8 +11,8 @@ def list_active_com_ports():
         print(port,desc)
     return active_ports
 
-SERIAL_PORT = 'COM4' 
-BAUD_RATE = 115200
+SERIAL_PORT = 'COM4'
+BAUD_RATE = 9600
 
 def read_from_serial(serial_port, baud_rate):
     ser = serial.Serial(serial_port, baud_rate)
@@ -35,7 +35,7 @@ def main():
     print("Found serial port " + serial_port)
     print('-------------- STARTING EXPORT -----------------')
     baud_rate = BAUD_RATE
-    file_name = 'serial_data.csv'
+    file_name = f'serial_data-{int(time.time())}.csv'
     ser = read_from_serial(serial_port, baud_rate)
     try:
         while True:

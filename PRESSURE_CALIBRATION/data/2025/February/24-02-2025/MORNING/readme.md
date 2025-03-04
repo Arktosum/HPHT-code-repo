@@ -1,0 +1,1 @@
+Pressure Ramping rate : 10 bar per 15 minutes
