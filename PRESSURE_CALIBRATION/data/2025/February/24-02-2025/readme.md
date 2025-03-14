@@ -1,1 +1,1 @@
-Pressure ramping rate : 10 bar per 5 minutes
+Pressure ramping rate : 5 bar per 10 minutes

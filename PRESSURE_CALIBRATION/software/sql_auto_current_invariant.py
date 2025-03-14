@@ -131,13 +131,13 @@ MAP = [
 ]
 
 rm = pyvisa.ResourceManager()
-nano_volt = rm.open_resource('GPIB1::7::INSTR')
+nano_volt = rm.open_resource('GPIB0::7::INSTR')
 nano_volt.write('*RST')
 nano_volt.write(":SENS:FUNC 'VOLT'; :SENS:CHAN 1;")
-sm = rm.open_resource('GPIB1::18::INSTR')
+sm = rm.open_resource('GPIB0::18::INSTR')
 
 conn, cursor = setup_server()
-MODE = 'FORWARD'
+MODE = 'REVERSE'
 csv_filename = f'pressure_resistance-{MODE}-{time.time()}.csv'
 headers = ['Timestamp',
            'Load Pressure (bar)', 'Voltage (V)', 'Resistance (ohm)']
@@ -150,7 +150,7 @@ CURRENT = 500 * 10**-6
 
 def get_current_pressure():
     cursor.execute("SELECT top 1 * FROM [IIT300].[dbo].[ActualLog] WHERE BATCHNO = ? order by id desc",
-                   ['HP_CALIB_BI_CHN_A_14MM_280225'])
+                   ['HP_CALIB_BIS_CHN_PYRO_A_130325'])
     row = cursor.fetchone()
     if not row:
         return -1
@@ -160,7 +160,6 @@ def get_current_pressure():
 
 
 prev_avg_pressure = 0 if MODE == 'FORWARD' else 200
-
 
 def render():
     global prev_avg_pressure
@@ -186,8 +185,6 @@ def render():
     avg_volt = sum(avg_volts) / len(avg_volts)
     resistance = avg_volt / (CURRENT + epsilon)
 
-
-   
     prev_avg_pressure = average_pressure
     resistances.append(resistance)
     voltages.append(avg_volt)
@@ -195,7 +192,7 @@ def render():
 
     timestamp = get_time()
     row_data = [timestamp, average_pressure, avg_volt, resistance]
-    write_to_csv(csv_filename, headers, row_data)
+    write_to_csv(csv_filename+".csv", headers, row_data)
 
     print(f"-----------------------------")
     print(f"Timestamp: {timestamp}")

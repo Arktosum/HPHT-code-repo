@@ -1,7 +1,6 @@
 import time
 import pyvisa
 
-
 class NanoVoltmeter:
     def __init__(self, rm, GPIB):
         self.rm = rm

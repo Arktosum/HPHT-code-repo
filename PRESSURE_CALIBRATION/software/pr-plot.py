@@ -15,8 +15,8 @@ with open('pr_config.json', 'r') as file:
 # -------------------------------------------------------------------------------------
 # Setup pyVISA resource Manager
 rm = pyvisa.ResourceManager()
-nanovolt = NanoVoltmeter(rm, 'GPIB1::7::INSTR')
-sourcemeter = SourceMeter(rm, 'GPIB1::18::INSTR')
+nanovolt = NanoVoltmeter(rm, 'GPIB0::7::INSTR')
+sourcemeter = SourceMeter(rm, 'GPIB0::18::INSTR')
 # -------------------------------------------------------------------------------------
 
 SOURCE_CURRENT = CONFIG['SOURCE_CURRENT']

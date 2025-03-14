@@ -16,7 +16,7 @@ with open('iv_config.json', 'r') as file:
 
 # Setup pyVISA resource Manager
 rm = pyvisa.ResourceManager()
-sourcemeter = SourceMeter(rm, 'GPIB1::18::INSTR')
+sourcemeter = SourceMeter(rm, 'GPIB0::18::INSTR')
 # -------------------------------------------------------------------------------------
 
 MIN_MEASUREMENT_RANGE = CONFIG['MIN_MEASUREMENT_RANGE']
